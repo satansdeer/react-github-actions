@@ -30,9 +30,11 @@ jobs:
         yarn install
         yarn build
         yarn test
-        
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Deploy to netlify
+      uses: netlify/actions/cli@master
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
       with:
-        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        publish_dir: ./build
+        args: deploy --dir=build --prod
+        secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
